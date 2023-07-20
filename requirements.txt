@@ -9,4 +9,3 @@ uvicorn
 gunicorn
 dvc
 dvc-gs
-flake8
