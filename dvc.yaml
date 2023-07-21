@@ -1,7 +1,6 @@
 stages:
   preprocess:
-    cmd: python training/preprocess.py --input_data ./data/census.csv --output_data
-      ./data/preprocess.csv
+    cmd: python training/preprocess.py
     deps:
     - data/census.csv
     - training/preprocess.py
