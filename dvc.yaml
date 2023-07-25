@@ -8,3 +8,13 @@ stages:
     - param
     outs:
     - data/preprocess.csv
+  training:
+    cmd: python training/training.py --force
+    deps:
+    - data/preprocess.csv
+    - training/train_model.py
+    params:
+    - param
+    outs:
+    - model/random_forest_census_income.joblib
+    - model/scores.json
