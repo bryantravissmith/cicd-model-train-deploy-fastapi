@@ -51,7 +51,7 @@ def train(params: Dict):
     save_model_scores(pipe, X_test, y_test)
     dump(
         pipe,
-        os.join(
+        os.path.join(
             'model',
             f"{params['random_forest']['export_name']}.joblib"
         )
