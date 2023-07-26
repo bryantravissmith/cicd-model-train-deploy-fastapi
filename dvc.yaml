@@ -7,14 +7,15 @@ stages:
     outs:
     - data/preprocess.csv
   training:
-    cmd: python training/training.py --force
+    cmd: python training/train_model.py
     deps:
     - data/preprocess.csv
     - training/train_model.py
     params:
-    - random_forest.arams.n_estimators
-    - random_forest.arams.max_depth
-    - random_forest.arams.min_samples_split
+    - random_forest.params.n_estimators
+    - random_forest.params.max_depth
+    - random_forest.params.min_samples_split
     outs:
     - model/random_forest_census_income.joblib
-    - model/scores.json
+    metrics:
+      - model/scores.json
