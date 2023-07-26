@@ -4,8 +4,6 @@ stages:
     deps:
     - data/census.csv
     - training/preprocess.py
-    params:
-    - param
     outs:
     - data/preprocess.csv
   training:
@@ -14,7 +12,9 @@ stages:
     - data/preprocess.csv
     - training/train_model.py
     params:
-    - param
+    - random_forest.arams.n_estimators
+    - random_forest.arams.max_depth
+    - random_forest.arams.min_samples_split
     outs:
     - model/random_forest_census_income.joblib
     - model/scores.json
