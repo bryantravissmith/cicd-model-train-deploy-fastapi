@@ -1,0 +1,46 @@
+schema: '2.0'
+stages:
+  preprocess:
+    cmd: python training/preprocess.py
+    deps:
+    - path: data/census.csv
+      hash: md5
+      md5: 145de00f6e6053d3f7044628f9a5b5ff
+      size: 3974474
+    - path: training/preprocess.py
+      hash: md5
+      md5: 52bb817670f53ad9c0a5e3c5175c75d2
+      size: 692
+    outs:
+    - path: data/preprocess.csv
+      hash: md5
+      md5: b8330dc0a38251ebaffe9d07ad5e36f4
+      size: 3396202
+      isexec: true
+  training:
+    cmd: python training/train_model.py
+    deps:
+    - path: data/preprocess.csv
+      hash: md5
+      md5: b8330dc0a38251ebaffe9d07ad5e36f4
+      size: 3396202
+    - path: training/train_model.py
+      hash: md5
+      md5: 520743cf15b85e592a047483b2c1bbb8
+      size: 3113
+    params:
+      params.yaml:
+        random_forest.params.max_depth: 15
+        random_forest.params.min_samples_split: 5
+        random_forest.params.n_estimators: 300
+    outs:
+    - path: model/random_forest_census_income.joblib
+      hash: md5
+      md5: 3c3fdb2d53cbc6ce74c883d94dfc4622
+      size: 60505784
+      isexec: true
+    - path: model/scores.json
+      hash: md5
+      md5: 857f3bf072362658abd05e922ca78eb4
+      size: 148
+      isexec: true
