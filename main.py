@@ -2,6 +2,7 @@ from enum import Enum
 from fastapi import FastAPI
 from joblib import load
 import os
+import pandas as pd
 from pydantic import BaseModel
 
 
@@ -132,8 +133,18 @@ class NativeCountry(str, Enum):
 
 
 class Data(BaseModel):
-    work_class: WorkClass
+    workclass: WorkClass
     education: Education
+    marital_status: MaritalStatus
+    occupation: Occupation
+    relationship: Relationship
+    race: Race
+    sex: Sex
+    native_country: NativeCountry
+
+
+class Prediction(BaseModel):
+    income_above_50k: int
 
 
 # Instantiate the app.
@@ -145,3 +156,23 @@ model = load(os.path.join('model', 'random_forest_census_income.joblib'))
 @app.get("/")
 async def say_hello():
     return {"greeting": "Hello World!"}
+
+
+@app.post('/')
+async def api(data: Data):
+    dataframe = data_to_dataframe(data)
+    prediction = model.predict(dataframe)
+    return Prediction(income_above_50k=prediction[0])
+
+
+def data_to_dataframe(data: Data) -> pd.DataFrame:
+    return pd.DataFrame.from_dict({
+        'workclass': [data.workclass],
+        'education': [data.education],
+        'marital-status': [data.marital_status],
+        'occupation': [data.occupation],
+        'relationship': [data.relationship],
+        'race': [data.race],
+        'sex': [data.sex],
+        'native-country': [data.native_country],
+    })
