@@ -149,12 +149,13 @@ class Prediction(BaseModel):
 
 # Instantiate the app.
 app = FastAPI()
+# Load Model
 model = load(os.path.join('model', 'random_forest_census_income.joblib'))
 
 
 # Define a GET on the specified endpoint.
 @app.get("/")
-async def say_hello():
+async def greetings():
     return {"Greeting":
             "This is a CI/CD API Endpoint.  Please post to get api results"}
 
