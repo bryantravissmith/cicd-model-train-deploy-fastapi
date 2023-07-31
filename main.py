@@ -155,7 +155,8 @@ model = load(os.path.join('model', 'random_forest_census_income.joblib'))
 # Define a GET on the specified endpoint.
 @app.get("/")
 async def say_hello():
-    return {"greeting": "Hello World!"}
+    return {"Greeting":
+            "This is a CI/CD API Endpoint.  Please post to get api results"}
 
 
 @app.post('/')

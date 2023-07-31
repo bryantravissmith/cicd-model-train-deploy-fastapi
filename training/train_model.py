@@ -4,7 +4,7 @@ Module for training a random forest model for predicting income > 50k
 import pandas as pd
 import os
 import json
-from joblib import dump
+from joblib import dump, load
 import matplotlib.pyplot as plt
 from typing import Dict, List, Tuple
 import yaml
@@ -56,18 +56,22 @@ def train(params: Dict):
         target=y_test,
         pred=y_pred
     ).pipe(
-        save_f1_plots
+        save_f1_slices
     )
 
     save_model_scores(pipe, X_test, y_test)
-
-    dump(
+    save_model(
         pipe,
-        os.path.join(
-            'model',
-            f"{params['random_forest']['export_name']}.joblib"
-        )
+        f"{params['random_forest']['export_name']}.joblib"
     )
+
+
+def save_model(model_pipeline: Pipeline, name: str):
+    dump(model_pipeline, os.path.join('model', name))
+
+
+def load_model(name: str) -> Pipeline:
+    return load(os.path.join('model', name))
 
 
 def calculate_scores(y: pd.Series, y_pred: pd.Series) -> Tuple[
@@ -79,18 +83,36 @@ def calculate_scores(y: pd.Series, y_pred: pd.Series) -> Tuple[
     return f1, precision, recall, accuracy
 
 
-def save_f1_plots(
+def save_f1_slices(
         dataframe: pd.DataFrame,
         prediction: str = 'pred',
         target: str = 'target',
         categories: List[str] = ['relationship', 'sex', 'race', 'occupation']
 ):
-    for cat in categories:
+    for i, cat in enumerate(categories):
         plt.clf()
-        dataframe.groupby(cat).apply(
+        grp_dataframe = dataframe.groupby(cat).apply(
             lambda x: groupby_scores(x, prediction, target)
-        ).f1.sort_values().plot(kind='bar')
+        ).sort_values('f1')
+        grp_dataframe.f1.plot(kind='bar', rot=0)
         plt.savefig(os.path.join('plots', f"{cat}.png"))
+
+        mode = "a"
+        if i == 0:
+            mode = "w"
+
+        grp_dataframe.assign(
+            category=cat
+        ).reset_index()[[
+            'category',
+            cat,
+            'f1'
+        ]].to_csv(
+            os.path.join('model', 'slice_output.txt'),
+            index=False,
+            header=False,
+            mode=mode
+        )
 
 
 def groupby_scores(row: pd.Series, target: str = 'y',

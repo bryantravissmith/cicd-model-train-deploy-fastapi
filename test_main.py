@@ -11,10 +11,12 @@ client = TestClient(app)
 def test_api_locally_get_root():
     r = client.get("/")
     assert r.status_code == 200
+    response = r.json()
+    assert response["Greeting"] ==\
+        "This is a CI/CD API Endpoint.  Please post to get api results"
 
 
 def test_valid_prediciton():
-
     data = {
         'workclass': 'State-gov',
         'education': 'Bachelors',
@@ -37,7 +39,6 @@ def test_valid_prediciton():
 
 
 def test_invalid_prediciton():
-
     data = {
         'workclass': 'State-gov',
         'education': 'Bachelors',
