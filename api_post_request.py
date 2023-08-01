@@ -16,6 +16,7 @@ DATA = {
 
 def make_request():
     response = requests.post(URL_ENDPOINT, json=DATA)
+    print(response.status_code)
     print(response.json())
 
 
