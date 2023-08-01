@@ -1,6 +1,10 @@
 # cicd-model-train-deploy-fastapi
 A Continuous Integration / Continuous Delivery Model Release repo using FastAPI
 
+This is a project for the ML Engineering Udacity Nanodegree.   It leverage
+github actions for testing and linting, and github hooks to deploy the ML Fast
+API endpoint when test pasts.   Details about the model are in the following
+Model Card section.
 
 
 # Model Card
