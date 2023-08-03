@@ -102,12 +102,17 @@ def test_calculate_score():
     assert np.abs(f1 - 0.5) < 1e-5
 
 
-def test_model_predictions(model, positive_predictions, negative_predictions):
+def test_positive_model_predictions(model, positive_predictions):
     y_pos = model.predict(positive_predictions)
-    y_neg = model.predict(negative_predictions)
 
     y_pos_values = list(np.unique(y_pos).astype(int))
-    y_neg_values = list(np.unique(y_neg).astype(int))
 
     assert y_pos_values == [1]
+
+
+def test_negative_model_predictions(model, negative_predictions):
+    y_neg = model.predict(negative_predictions)
+
+    y_neg_values = list(np.unique(y_neg).astype(int))
+
     assert y_neg_values == [0]

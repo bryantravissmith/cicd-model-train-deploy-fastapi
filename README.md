@@ -3,7 +3,9 @@ A Continuous Integration / Continuous Delivery Model Release repo using FastAPI
 
 This is a project for the ML Engineering Udacity Nanodegree.   It leverage
 github actions for testing and linting, and github hooks to deploy the ML Fast
-API endpoint when test pasts.   Details about the model are in the following
+API endpoint when test pasts to a free Render.com endpoint.
+
+Details about the model are in the following
 Model Card section.
 
 
@@ -31,7 +33,8 @@ set.
 
 ## Metrics
 The model was evaluted using F1 score.  The value for the current mode is
-0.6063
+0.6063.   Other measures montored include a precision of 0.546, a recall of
+0.682 and an accuracy of 82.9%.
 
 ## Ethical Considerations
 
